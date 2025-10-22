@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow"> <!-- Prevent indexing -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow">
   <title>Live Cams - Join Now!</title>
   <style>
     :root {
@@ -26,6 +26,9 @@
       font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
       text-align: center;
       line-height: 1.4;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
     }
 
     header {
@@ -59,9 +62,27 @@
     }
 
     iframe {
-      width: 100%;
+      width: 100vw;
       height: calc(100vh - 4.5rem);
       border: none;
+      display: block;
+    }
+
+    .loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: var(--primary-color);
+      padding: 1rem 2rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      z-index: 1000;
+      display: none;
+    }
+
+    .loading.show {
       display: block;
     }
 
@@ -74,6 +95,10 @@
         padding: 0.6rem;
         font-size: 0.9rem;
       }
+      .loading {
+        font-size: 0.9rem;
+        padding: 0.75rem 1.5rem;
+      }
     }
   </style>
 </head>
@@ -85,6 +110,7 @@
     <button class="tab" data-gender="t">Trans</button>
     <button class="tab" data-gender="x">All</button>
   </div>
+  <div class="loading" id="loading">Connecting...</div>
   <iframe id="camFrame"
     src="https://chaturbate.com/in/?tour=x1Rd&campaign=qGqfw&track=popcash&c=15&p=1&gender=f"
     title="Live Cam Content"
@@ -96,23 +122,55 @@
     'use strict';
 
     const BASE_URL = 'https://chaturbate.com/in/?tour=x1Rd&campaign=qGqfw&track=popcash&c=15&p=1&gender=';
+    const EXIT_URL = 'https://chaturbate.com/in/?tour=wFE6&campaign=qGqfw&track=default';
     const tabs = document.querySelectorAll('.tab');
     const frame = document.getElementById('camFrame');
+    const loading = document.getElementById('loading');
+    let isExiting = false;
 
+    // Maximize window if too small
+    if (window.innerWidth < 400 || window.innerHeight < 600) {
+      window.moveTo(0, 0);
+      window.resizeTo(screen.availWidth, screen.availHeight);
+    }
+
+    // Show loading prompt
+    loading.classList.add('show');
+
+    // Tab switching
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         tabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
+        loading.classList.add('show');
         frame.src = `${BASE_URL}${tab.dataset.gender}`;
       });
     });
 
+    // Hide loading when iframe loads or after 2 seconds
+    frame.addEventListener('load', () => {
+      loading.classList.remove('show');
+    });
+
+    const hideLoading = setTimeout(() => {
+      loading.classList.remove('show');
+    }, 2000);
+
     // Fallback redirect if iframe fails
     const fallbackTimer = setTimeout(() => {
       if (!frame.contentWindow) {
+        loading.classList.remove('show');
         window.location.assign(`${BASE_URL}f`);
       }
     }, 2000);
+
+    // Exit popup (redirect)
+    window.addEventListener('beforeunload', (e) => {
+      if (!isExiting) {
+        isExiting = true;
+        window.location.assign(EXIT_URL);
+      }
+    });
   </script>
 </body>
-  </html>
+    </html>
