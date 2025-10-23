@@ -4,14 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="robots" content="noindex, nofollow">
-  <title>Live Cams - Join Now!</title>
+  <title>Live Cam - Join Now!</title>
   <style>
     :root {
       --primary-color: #ff3366;
       --bg-dark: #000;
       --bg-header: #111;
-      --bg-tabs: #1a1a1a;
-      --bg-tab-hover: #222;
     }
 
     * {
@@ -27,7 +25,7 @@
       text-align: center;
       line-height: 1.4;
       height: 100vh;
-      width: 100vw;
+      width: 100%;
       overflow: hidden;
     }
 
@@ -38,34 +36,14 @@
       font-weight: 600;
     }
 
-    .tabs {
-      display: flex;
-      background: var(--bg-tabs);
-    }
-
-    .tab {
-      flex: 1;
-      padding: 0.75rem;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: background-color 0.2s ease;
-      font-size: 0.9rem;
-    }
-
-    .tab:hover {
-      background: var(--bg-tab-hover);
-    }
-
-    .tab.active {
-      border-bottom: 2px solid var(--primary-color);
-      color: var(--primary-color);
-    }
-
     iframe {
-      width: 100vw;
+      width: 100%;
       height: calc(100vh - 4.5rem);
       border: none;
       display: block;
+      position: absolute;
+      top: 4.5rem;
+      left: 0;
     }
 
     .loading {
@@ -87,10 +65,6 @@
     }
 
     @media (max-width: 600px) {
-      .tab {
-        padding: 0.5rem;
-        font-size: 0.8rem;
-      }
       header {
         padding: 0.6rem;
         font-size: 0.9rem;
@@ -103,17 +77,11 @@
   </style>
 </head>
 <body>
-  <header>🔥 Live Cams Await — Join Now! 🔥</header>
-  <div class="tabs">
-    <button class="tab active" data-gender="f">Girls</button>
-    <button class="tab" data-gender="c">Couples</button>
-    <button class="tab" data-gender="t">Trans</button>
-    <button class="tab" data-gender="x">All</button>
-  </div>
+  <header>🔥 Live Cam - Join Now! 🔥</header>
   <div class="loading" id="loading">Connecting...</div>
   <iframe id="camFrame"
-    src="https://chaturbate.com/in/?tour=x1Rd&campaign=qGqfw&track=popcash&c=15&p=1&gender=f"
-    title="Live Cam Content"
+    src="https://chaturbate.com/in/?tour=dU9X&campaign=qGqfw&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never" <!-- Corrected domain -->
+    title="Live Cam Stream"
     loading="eager"
     allowfullscreen>
   </iframe>
@@ -121,31 +89,13 @@
   <script>
     'use strict';
 
-    const BASE_URL = 'https://chaturbate.com/in/?tour=x1Rd&campaign=qGqfw&track=popcash&c=15&p=1&gender=';
-    const EXIT_URL = 'https://chaturbate.com/in/?tour=wFE6&campaign=qGqfw&track=default';
-    const tabs = document.querySelectorAll('.tab');
+    const EXIT_URL = 'https://chaturbate.com/in/?tour=dU9X&campaign=qGqfw&track=default';
     const frame = document.getElementById('camFrame');
     const loading = document.getElementById('loading');
     let isExiting = false;
 
-    // Maximize window if too small
-    if (window.innerWidth < 400 || window.innerHeight < 600) {
-      window.moveTo(0, 0);
-      window.resizeTo(screen.availWidth, screen.availHeight);
-    }
-
     // Show loading prompt
     loading.classList.add('show');
-
-    // Tab switching
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        loading.classList.add('show');
-        frame.src = `${BASE_URL}${tab.dataset.gender}`;
-      });
-    });
 
     // Hide loading when iframe loads or after 2 seconds
     frame.addEventListener('load', () => {
@@ -160,7 +110,7 @@
     const fallbackTimer = setTimeout(() => {
       if (!frame.contentWindow) {
         loading.classList.remove('show');
-        window.location.assign(`${BASE_URL}f`);
+        window.location.assign('https://chaturbate.com/in/?tour=dU9X&campaign=qGqfw&track=default');
       }
     }, 2000);
 
@@ -173,4 +123,4 @@
     });
   </script>
 </body>
-    </html>
+  </html>
